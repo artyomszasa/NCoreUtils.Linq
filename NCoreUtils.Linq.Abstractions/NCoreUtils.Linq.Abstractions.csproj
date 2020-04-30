@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net461</TargetFrameworks>
-    <LangVersion>preview</LangVersion>
-    <Version>3.0.0-preview9</Version>
+    <TargetFrameworks>netstandard2.1;netstandard2.0;net461</TargetFrameworks>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <Version>3.1.0-alpha0</Version>
   </PropertyGroup>
   <!-- mono fix -->
   <PropertyGroup>
@@ -13,6 +14,6 @@
     <AssemblySearchPaths Condition="'$(BaseFrameworkPathOverrideForMono)' != ''">$(FrameworkPathOverride)/Facades;$(AssemblySearchPaths)</AssemblySearchPaths>
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.1' ">
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.0.0-preview9.19421.4" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.1.0" />
   </ItemGroup>
 </Project>

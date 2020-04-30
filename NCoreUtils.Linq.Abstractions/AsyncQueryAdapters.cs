@@ -45,26 +45,26 @@ namespace NCoreUtils.Linq
             });
         }
 
-        public static async Task<IAsyncQueryProvider> AdaptAsync(IQueryProvider provider, CancellationToken cancellationToken)
+        public static ValueTask<IAsyncQueryProvider> AdaptAsync(IQueryProvider provider, CancellationToken cancellationToken)
         {
             while (0 != Interlocked.CompareExchange(ref _sync, 1, 0)) { }
             try
             {
                 if (0 == _adapters.Count)
                 {
-                    return null;
+                    return default;
                 }
                 var i = 0;
-                Task<IAsyncQueryProvider> next()
+                ValueTask<IAsyncQueryProvider> next()
                 {
                     ++i;
                     if (i >= _adapters.Count)
                     {
-                        return Task.FromResult<IAsyncQueryProvider>(null);
+                        return default;
                     }
                     return _adapters[i].GetAdapterAsync(next, provider, cancellationToken);
                 }
-                return await _adapters[0].GetAdapterAsync(next, provider, cancellationToken);
+                return _adapters[0].GetAdapterAsync(next, provider, cancellationToken);
             }
             finally
             {

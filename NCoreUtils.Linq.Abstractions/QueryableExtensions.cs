@@ -28,7 +28,7 @@ namespace NCoreUtils.Linq
         #pragma warning restore IDE0060,IDE0051
         #endregion
 
-        static async Task<IAsyncQueryProvider> GetAsync(this IQueryProvider provider, CancellationToken cancellationToken)
+        static ValueTask<IAsyncQueryProvider> GetAsync(this IQueryProvider provider, CancellationToken cancellationToken)
         {
             if (provider == null)
             {
@@ -36,14 +36,28 @@ namespace NCoreUtils.Linq
             }
             if (provider is IAsyncQueryProvider asyncProvider)
             {
-                return asyncProvider;
+                return new ValueTask<IAsyncQueryProvider>(asyncProvider);
             }
-            var adaptedProvider = await AsyncQueryAdapters.AdaptAsync(provider, cancellationToken);
-            if (null != adaptedProvider)
+            var adaptedProvider = AsyncQueryAdapters.AdaptAsync(provider, cancellationToken);
+            if (adaptedProvider.IsCompletedSuccessfully)
             {
+                if (null == adaptedProvider.Result)
+                {
+                    throw new InvalidOperationException($"{provider.GetType().FullName} cannot be adapted.");
+                }
                 return adaptedProvider;
             }
-            throw new InvalidOperationException($"{provider.GetType().FullName} cannot be adapted.");
+            return new ValueTask<IAsyncQueryProvider>(ContinueAsync(provider, adaptedProvider));
+
+            static async Task<IAsyncQueryProvider>ContinueAsync(IQueryProvider provider, ValueTask<IAsyncQueryProvider> valueTask)
+            {
+                var adaptedProvider = await valueTask;
+                if (null != adaptedProvider)
+                {
+                    return adaptedProvider;
+                }
+                throw new InvalidOperationException($"{provider.GetType().FullName} cannot be adapted.");
+            }
         }
 
         public static Task<bool> AllAsync<T>(this IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
@@ -307,7 +321,7 @@ namespace NCoreUtils.Linq
             this IQueryable<TElement> source,
             Func<TElement, TKey> keySelector,
             CancellationToken cancellationToken)
-            => source.ToDictionaryAsync(keySelector, null, cancellationToken);
+            => source.ToDictionaryAsync(keySelector, null!, cancellationToken);
 
         public static async Task<Dictionary<TKey, TElement>> ToDictionaryAsync<TKey, TElement, TSource>(
             this IQueryable<TSource> source,
@@ -342,7 +356,7 @@ namespace NCoreUtils.Linq
             Func<TSource, TKey> keySelector,
             Func<TSource, TElement> valueSelector,
             CancellationToken cancellationToken)
-            => source.ToDictionaryAsync(keySelector, valueSelector, null, cancellationToken);
+            => source.ToDictionaryAsync(keySelector, valueSelector, null!, cancellationToken);
 
         public static async IAsyncEnumerable<T> ExecuteAsync<T>(this IQueryable<T> source, [EnumeratorCancellation] CancellationToken cancellationToken)
         {
