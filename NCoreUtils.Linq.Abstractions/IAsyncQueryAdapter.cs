@@ -7,6 +7,10 @@ namespace NCoreUtils.Linq
 {
     public interface IAsyncQueryAdapter
     {
-        ValueTask<IAsyncQueryProvider> GetAdapterAsync(Func<ValueTask<IAsyncQueryProvider>> next, IQueryProvider source, CancellationToken cancellationToken);
+        ValueTask<IAsyncQueryProvider> GetAdapterAsync(
+            Func<ValueTask<IAsyncQueryProvider>> next,
+            IQueryProvider source,
+            CancellationToken cancellationToken
+        );
     }
 }

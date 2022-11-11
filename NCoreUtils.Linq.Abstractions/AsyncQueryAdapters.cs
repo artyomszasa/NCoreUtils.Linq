@@ -9,66 +9,69 @@ namespace NCoreUtils.Linq
 {
     public static class AsyncQueryAdapters
     {
-        sealed class ByReferenceEqualityComparer<T> : IEqualityComparer<T>
+        private sealed class ByReferenceEqualityComparer<T> : IEqualityComparer<T>
+            where T : class
         {
-            public bool Equals(T x, T y) => ReferenceEquals(x, y);
+            public bool Equals(T? x, T? y) => ReferenceEquals(x, y);
 
             public int GetHashCode(T obj) => RuntimeHelpers.GetHashCode(obj);
         }
 
-        static readonly ByReferenceEqualityComparer<IAsyncQueryAdapter> _eq = new ByReferenceEqualityComparer<IAsyncQueryAdapter>();
+        private static ByReferenceEqualityComparer<IAsyncQueryAdapter> RefEq { get; } = new();
 
-        static readonly List<IAsyncQueryAdapter> _adapters = new List<IAsyncQueryAdapter>();
-        static int _sync;
+        private static List<IAsyncQueryAdapter> Adapters { get; } = new();
 
-        static void Synced(Action action)
-        {
-            while (0 != Interlocked.CompareExchange(ref _sync, 1, 0)) { }
-            try
-            {
-                action();
-            }
-            finally
-            {
-                _sync = 0;
-            }
-        }
+        private static SpinLock _sync = new(enableThreadOwnerTracking: false);
+
+        private static ref SpinLock Sync => ref _sync;
 
         public static void Add(IAsyncQueryAdapter adapter)
         {
-            Synced(() =>
-            {
-                if (!_adapters.Contains(adapter, _eq))
-                {
-                    _adapters.Add(adapter);
-                }
-            });
-        }
-
-        public static ValueTask<IAsyncQueryProvider> AdaptAsync(IQueryProvider provider, CancellationToken cancellationToken)
-        {
-            while (0 != Interlocked.CompareExchange(ref _sync, 1, 0)) { }
+            var lockTaken = false;
             try
             {
-                if (0 == _adapters.Count)
+                Sync.Enter(ref lockTaken);
+                if (!Adapters.Contains(adapter, RefEq))
+                {
+                    Adapters.Add(adapter);
+                }
+            }
+            finally
+            {
+                if (lockTaken)
+                {
+                    Sync.Exit(useMemoryBarrier: false);
+                }
+            }
+        }
+
+        public static async ValueTask<IAsyncQueryProvider?> AdaptAsync(IQueryProvider provider, CancellationToken cancellationToken)
+        {
+            var lockTaken = false;
+            try
+            {
+                Sync.Enter(ref lockTaken);
+                if (0 == Adapters.Count)
                 {
                     return default;
                 }
                 var i = 0;
                 ValueTask<IAsyncQueryProvider> next()
                 {
-                    ++i;
-                    if (i >= _adapters.Count)
+                    if (++i >= Adapters.Count)
                     {
                         return default;
                     }
-                    return _adapters[i].GetAdapterAsync(next, provider, cancellationToken);
+                    return Adapters[i].GetAdapterAsync(next, provider, cancellationToken);
                 }
-                return _adapters[0].GetAdapterAsync(next, provider, cancellationToken);
+                return await Adapters[0].GetAdapterAsync(next, provider, cancellationToken).ConfigureAwait(false);
             }
             finally
             {
-                _sync = 0;
+                if (lockTaken)
+                {
+                    Sync.Exit(useMemoryBarrier: false);
+                }
             }
         }
     }
