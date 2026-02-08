@@ -3,14 +3,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NCoreUtils.Linq
+namespace NCoreUtils.Linq;
+
+public interface IAsyncQueryAdapter
 {
-    public interface IAsyncQueryAdapter
-    {
-        ValueTask<IAsyncQueryProvider> GetAdapterAsync(
-            Func<ValueTask<IAsyncQueryProvider>> next,
-            IQueryProvider source,
-            CancellationToken cancellationToken
-        );
-    }
+    ValueTask<IAsyncQueryProvider> GetAdapterAsync(
+        Func<ValueTask<IAsyncQueryProvider>> next,
+        IQueryProvider source,
+        CancellationToken cancellationToken = default
+    );
 }

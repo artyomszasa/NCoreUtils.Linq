@@ -3,12 +3,11 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NCoreUtils.Linq
-{
-    public interface IAsyncQueryProvider
-    {
-        IAsyncEnumerable<T> ExecuteEnumerableAsync<T>(Expression expression);
+namespace NCoreUtils.Linq;
 
-        Task<T> ExecuteAsync<T>(Expression expression, CancellationToken cancellationToken);
-    }
+public interface IAsyncQueryProvider
+{
+    IAsyncEnumerable<T> ExecuteEnumerableAsync<T>(Expression expression);
+
+    Task<T> ExecuteAsync<T>(Expression expression, CancellationToken cancellationToken);
 }

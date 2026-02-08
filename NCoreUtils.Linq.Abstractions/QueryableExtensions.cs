@@ -31,13 +31,6 @@ namespace NCoreUtils.Linq
 
         #endregion
 
-        // [DynamicDependency(DynamicallyAccessedMemberTypes.PublicMethods, typeof(Queryable))]
-        // [DynamicDependency(DynamicallyAccessedMemberTypes.PublicMethods, typeof(Enumerable))]
-        // [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "Dynamic dependency.")]
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         private static ValueTask<IAsyncQueryProvider> GetAsync(
             this IQueryProvider provider,
             CancellationToken cancellationToken)
@@ -72,10 +65,6 @@ namespace NCoreUtils.Linq
             }
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static Task<bool> AllAsync<T>(
             this IQueryable<T> source,
             Expression<Func<T, bool>> predicate,
@@ -89,10 +78,6 @@ namespace NCoreUtils.Linq
             return source.AnyAsync(negPredicate, cancellationToken);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<bool> AnyAsync<T>(this IQueryable<T> source, CancellationToken cancellationToken)
         {
             if (source == null)
@@ -107,10 +92,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static Task<bool> AnyAsync<T>(this IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
         {
             if (predicate == null)
@@ -120,10 +101,6 @@ namespace NCoreUtils.Linq
             return source.Where(predicate).AnyAsync(cancellationToken);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<bool> ContainsAsync<T>(this IQueryable<T> source, T item, CancellationToken cancellationToken)
         {
             if (source == null)
@@ -139,10 +116,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<int> CountAsync<T>(this IQueryable<T> source, CancellationToken cancellationToken)
         {
             if (source == null)
@@ -157,10 +130,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static Task<int> CountAsync<T>(
             this IQueryable<T> source,
             Expression<Func<T, bool>> predicate,
@@ -173,10 +142,6 @@ namespace NCoreUtils.Linq
             return source.Where(predicate).CountAsync(cancellationToken);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<T> ElementAtAsync<T>(
             this IQueryable<T> source,
             int index,
@@ -195,10 +160,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<T?> ElementAtOrDefaultAsync<T>(
             this IQueryable<T> source,
             int index,
@@ -217,10 +178,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<T> FirstAsync<T>(this IQueryable<T> source, CancellationToken cancellationToken)
         {
             if (source == null)
@@ -235,10 +192,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<T?> FirstOrDefaultAsync<T>(
             this IQueryable<T> source,
             CancellationToken cancellationToken)
@@ -255,10 +208,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static Task<T> FirstAsync<T>(
             this IQueryable<T> source,
             Expression<Func<T, bool>> predicate,
@@ -271,10 +220,6 @@ namespace NCoreUtils.Linq
             return source.Where(predicate).FirstAsync(cancellationToken);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static Task<T?> FirstOrDefaultAsync<T>(
             this IQueryable<T> source,
             Expression<Func<T, bool>> predicate,
@@ -287,10 +232,6 @@ namespace NCoreUtils.Linq
             return source.Where(predicate).FirstOrDefaultAsync(cancellationToken);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<long> LongCountAsync<T>(this IQueryable<T> source, CancellationToken cancellationToken)
         {
             if (source == null)
@@ -305,10 +246,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static Task<long> LongCountAsync<T>(
             this IQueryable<T> source,
             Expression<Func<T, bool>> predicate,
@@ -321,10 +258,6 @@ namespace NCoreUtils.Linq
             return source.Where(predicate).LongCountAsync(cancellationToken);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<T> SingleAsync<T>(this IQueryable<T> source, CancellationToken cancellationToken)
         {
             if (source == null)
@@ -339,10 +272,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<T?> SingleOrDefaultAsync<T>(
             this IQueryable<T> source,
             CancellationToken cancellationToken)
@@ -359,10 +288,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static Task<T> SingleAsync<T>(
             this IQueryable<T> source,
             Expression<Func<T, bool>> predicate,
@@ -375,10 +300,6 @@ namespace NCoreUtils.Linq
             return source.Where(predicate).SingleAsync(cancellationToken);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static Task<T?> SingleOrDefaultAsync<T>(
             this IQueryable<T> source,
             Expression<Func<T, bool>> predicate,
@@ -391,10 +312,6 @@ namespace NCoreUtils.Linq
             return source.Where(predicate).SingleOrDefaultAsync(cancellationToken);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<T[]> ToArrayAsync<T>(this IQueryable<T> source, CancellationToken cancellationToken)
         {
             if (source == null)
@@ -417,10 +334,6 @@ namespace NCoreUtils.Linq
             };
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<List<T>> ToListAsync<T>(this IQueryable<T> source, CancellationToken cancellationToken)
         {
             if (source == null)
@@ -439,10 +352,6 @@ namespace NCoreUtils.Linq
             return result;
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<Dictionary<TKey, TElement>> ToDictionaryAsync<TKey, TElement>(
             this IQueryable<TElement> source,
             Func<TElement, TKey> keySelector,
@@ -470,10 +379,6 @@ namespace NCoreUtils.Linq
             return result;
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static Task<Dictionary<TKey, TElement>> ToDictionaryAsync<TKey, TElement>(
             this IQueryable<TElement> source,
             Func<TElement, TKey> keySelector,
@@ -481,10 +386,6 @@ namespace NCoreUtils.Linq
             where TKey : notnull
             => source.ToDictionaryAsync(keySelector, null, cancellationToken);
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<Dictionary<TKey, TElement>> ToDictionaryAsync<TKey, TElement, TSource>(
             this IQueryable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -517,10 +418,6 @@ namespace NCoreUtils.Linq
             return result;
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static Task<Dictionary<TKey, TElement>> ToDictionaryAsync<TKey, TElement, TSource>(
             this IQueryable<TSource> source,
             Func<TSource, TKey> keySelector,
@@ -529,10 +426,6 @@ namespace NCoreUtils.Linq
             where TKey : notnull
             => source.ToDictionaryAsync(keySelector, valueSelector, null, cancellationToken);
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async IAsyncEnumerable<T> ExecuteAsync<T>(
             this IQueryable<T> source,
             [EnumeratorCancellation] CancellationToken cancellationToken)
@@ -551,10 +444,6 @@ namespace NCoreUtils.Linq
             }
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<int> SumAsync(this IQueryable<int> source, CancellationToken cancellationToken)
         {
             if (source == null)
@@ -569,10 +458,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<int> SumAsync<T>(
             this IQueryable<T> source,
             Expression<Func<T, int>> selector,
@@ -591,10 +476,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<long> SumAsync(this IQueryable<long> source, CancellationToken cancellationToken)
         {
             if (source == null)
@@ -609,10 +490,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<long> SumAsync<T>(
             this IQueryable<T> source,
             Expression<Func<T, long>> selector,
@@ -635,10 +512,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<decimal> SumAsync(this IQueryable<decimal> source, CancellationToken cancellationToken)
         {
             if (source == null)
@@ -653,10 +526,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<decimal> SumAsync<T>(
             this IQueryable<T> source,
             Expression<Func<T, decimal>> selector,
@@ -679,10 +548,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<int?> SumAsync(this IQueryable<int?> source, CancellationToken cancellationToken)
         {
             if (source == null)
@@ -697,10 +562,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<int?> SumAsync<T>(
             this IQueryable<T> source,
             Expression<Func<T, int?>> selector,
@@ -723,10 +584,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<long?> SumAsync(this IQueryable<long?> source, CancellationToken cancellationToken)
         {
             if (source == null)
@@ -741,10 +598,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<long?> SumAsync<T>(
             this IQueryable<T> source,
             Expression<Func<T, long?>> selector,
@@ -767,10 +620,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<decimal?> SumAsync(this IQueryable<decimal?> source, CancellationToken cancellationToken)
         {
             if (source == null)
@@ -785,10 +634,6 @@ namespace NCoreUtils.Linq
             ), cancellationToken).ConfigureAwait(false);
         }
 
-#if NET7_0_OR_GREATER
-        [RequiresUnreferencedCode(InMemoryQueryableExtensionMethodsRequiresUnreferencedCode)]
-        [RequiresDynamicCode(InMemoryQueryableExtensionMethodsRequiresDynamicCode)]
-#endif
         public static async Task<decimal?> SumAsync<T>(
             this IQueryable<T> source,
             Expression<Func<T, decimal?>> selector,

@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.1;net461;net462</TargetFrameworks>
-    <LangVersion>12.0</LangVersion>
+    <TargetFrameworks>net10.0;net8.0;net6.0;netstandard2.1;net461;net462</TargetFrameworks>
+    <RootNamespace>NCoreUtils.Linq</RootNamespace>
+    <LangVersion>14.0</LangVersion>
     <Nullable>enable</Nullable>
     <IsTrimmable>true</IsTrimmable>
     <IsAotCompatible>true</IsAotCompatible>
